@@ -2,6 +2,8 @@
 
 > JavaScript library that helps you integrate with Cities: Skylines 2 Game UI. Helps with both styling and communication with your C# mods.
 
+- [List of Components + API](./components.md)
+
 ## Usage for UI authors
 
 - Install the framework `npm install --save captain-of-coit/hookui-framework`
