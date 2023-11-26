@@ -15,3 +15,5 @@ const useDataUpdate = (react, event, onUpdate, deps) => {
         };
     }, deps || [])
 }
+
+export default useDataUpdate
