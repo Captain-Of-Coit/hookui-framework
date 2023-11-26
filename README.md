@@ -14,6 +14,24 @@
 </$Panel>
 ```
 
+Use `useDataUpdate` for easier subscriptions to data coming from the game engine:
+
+```jsx
+import {useDataUpdate} from 'hookui-framework'
+
+const $MyCoolMod = ({ react }) => {
+    const [seconds, setSeconds] = react.useState(0);
+
+    useDataUpdate(react, "myowncoolmod_namespace.seconds_passed", (data) => {
+        setSeconds(data)
+    })
+
+    return <div>
+        It's been {seconds} seconds since the mod first loaded!
+    </div>
+}
+```
+
 ## Setup for Development Environment
 
 - Copy `Cities2_Data\StreamingAssets\~UI~\GameUI\index.css` to `dev-env/index.css`
