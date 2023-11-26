@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom'
 
 import $Panel from './components/panel'
 import $Field from './components/field'
+import $Meter from './components/meter'
 
 const _components = {
     "panel": $Panel,
     "field": $Field,
+    "meter": $Meter,
 }
 
 const $InteractiveField = ({react}) => {
@@ -29,6 +31,17 @@ const _examples = {
         <$Field label="Left-hand Traffic" checked={true} onToggle={noop}/>,
         <$Field label="Unlimited Money" checked={false} onToggle={noop}/>,
         <$InteractiveField react={React}/>
+    ],
+    "meter": [
+        <$Meter label="maxGood Test 25" value={25} gradient="maxGood" />,
+        <$Meter label="maxGood Test 50" value={50} gradient="maxGood" />,
+        <$Meter label="maxGood Test 75" value={75} gradient="maxGood" />,
+        <$Meter label="maxGood Test 100" value={100} gradient="maxGood" />,
+        <hr/>,
+        <$Meter label="minGood Test 25" value={25} gradient="minGood" />,
+        <$Meter label="minGood Test 50" value={50} gradient="minGood" />,
+        <$Meter label="minGood Test 75" value={75} gradient="minGood" />,
+        <$Meter label="minGood Test 100" value={100} gradient="minGood" />,
     ]
 }
 

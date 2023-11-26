@@ -1,5 +1,5 @@
-export const getGameClass = (...args) => {
-    return args.map(key => styles[key]).join(' ');
+export const many = (...styles) => {
+    return styles.join(' ')
 }
 
 // $Panel
@@ -21,6 +21,17 @@ export const CLASS_UNCHECKED = 'unchecked'
 export const CLASS_CHECKED = 'checked'
 export const CLASS_CHECKMARK = 'checkmark_NXV'
 
-export const many = (...styles) => {
-    return styles.join(' ')
-}
+// $Meter
+export const CLASS_INFOVIEWPANELSECTION = 'infoview-panel-section_RXJ'
+export const CLASS_METER_CONTENT='content_1xS'
+export const CLASS_FOCUSABLE='focusable_GEc'
+export const CLASS_ITEMFOCUSED='item-focused_FuT'
+export const CLASS_LABELS='labels_L7Q'
+export const CLASS_ROW='row_S2v'
+export const CLASS_UPPERCASE='uppercase_RJI'
+export const CLASS_LEFT='left_Lgw'
+export const CLASS_BAR='bar_nW3'
+export const CLASS_GRADIENT='gradient_P8C'
+export const CLASS_POINTER='pointer_SV2'
+export const CLASS_POINTERICON='pointerIcon_i8i'
+export const CLASS_SMALLSPACE='small-space_DCq'
