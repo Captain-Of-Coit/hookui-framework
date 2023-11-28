@@ -4,11 +4,13 @@ import ReactDOM from 'react-dom'
 import $Panel from './components/panel'
 import $Field from './components/field'
 import $Meter from './components/meter'
+import $Button from './components/button'
 
 const _components = {
     "panel": $Panel,
     "field": $Field,
     "meter": $Meter,
+    "button": $Button,
 }
 
 const $InteractiveField = ({react}) => {
@@ -42,6 +44,10 @@ const _examples = {
         <$Meter label="minGood Test 50" value={50} gradient="minGood" />,
         <$Meter label="minGood Test 75" value={75} gradient="minGood" />,
         <$Meter label="minGood Test 100" value={100} gradient="minGood" />,
+    ],
+    "button": [
+        <$Button label="Test Button"/>,
+        <$Button label="window.alert" onClick={() => window.alert('hello there')}/>
     ]
 }
 

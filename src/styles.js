@@ -35,3 +35,6 @@ export const CLASS_GRADIENT='gradient_P8C'
 export const CLASS_POINTER='pointer_SV2'
 export const CLASS_POINTERICON='pointerIcon_i8i'
 export const CLASS_SMALLSPACE='small-space_DCq'
+
+// $Button
+export const CLASS_BUTTON='button_WWa'
