@@ -5,7 +5,6 @@ const $Field = ({label, react, checked, onToggle}) => {
     const checked_class = checked ? styles.CLASS_CHECKED : styles.CLASS_UNCHECKED
     
     const handleClick = () => {
-        console.log('clicked!');
         onToggle(!checked)
     }
 
