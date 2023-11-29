@@ -7,7 +7,7 @@ const defaultStyle = {
     height: "600rem"
 }
 
-const $Panel = ({ title, children, react }) => {
+const $Panel = ({ title, children, react, style}) => {
     const [position, setPosition] = react.useState({ top: 100, left: 10 });
     const [dragging, setDragging] = react.useState(false);
     const [rel, setRel] = react.useState({ x: 0, y: 0 }); // Position relative to the cursor
@@ -50,6 +50,7 @@ const $Panel = ({ title, children, react }) => {
         ...defaultStyle,
         top: position.top + 'px',
         left: position.left + 'px',
+        ...style
     }
 
     react.useEffect(() => {
