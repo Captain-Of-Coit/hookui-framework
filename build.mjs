@@ -1,5 +1,7 @@
 import * as esbuild from 'esbuild'
 
+console.log('starting server at localhost:8000')
+
 let ctx = await esbuild.context({
   entryPoints: ['src/dev-env.jsx'],
   bundle: true,
