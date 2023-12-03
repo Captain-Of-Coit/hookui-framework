@@ -10,6 +10,7 @@ export const CLASS_TITLEBAR = 'title-bar_PF4'
 export const CLASS_ICONSPACE = 'icon-space_h_f'
 export const CLASS_TITLE = 'title_SVH title_zQN'
 export const CLASS_CONTENT = 'content_XD5 content_AD7'
+export const CLASS_CLOSE_BTN='button_bvQ button_bvQ close-button_wKK'
 
 // $Field
 export const CLASS_FIELD = 'field_amr field_cjf'

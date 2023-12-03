@@ -4,39 +4,68 @@ import * as styles from '../styles'
 const defaultStyle = {
     position: 'absolute',
     width: "300rem",
-    height: "600rem"
+    height: "600rem",
 }
 
-const $Panel = ({ title, children, react, style}) => {
+const Resizer = ({ onMouseDown }) => {
+    const style = {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        width: '20px',
+        height: '20px',
+        cursor: 'nwse-resize',
+        zIndex: 10,
+    }
+    const triangle = {
+        width: 20,
+        height: 20,
+        opacity: 0.2,
+        background: 'linear-gradient(to right bottom, transparent 0%, transparent 50%, var(--accentColorDark) 50%, var(--accentColorDark) 100%)'
+    }
+    return <div style={style} onMouseDown={onMouseDown}>
+        {/* <img style={{transform: 'rotate(-15deg)'}} src="Media/Misc/BalloonArrowLeftTop.svg"/> */}
+        <div style={triangle}/>
+    </div>
+};
+
+const $CloseButton = ({onClick}) => {
+    return <button className="button_bvQ button_bvQ close-button_wKK" onClick={onClick}>
+        <div className="tinted-icon_iKo icon_PhD" style={{maskImage: 'url(Media/Glyphs/Close.svg)'}}></div>
+    </button>
+}
+
+const $Panel = ({ title, children, react, style, onClose}) => {
     const [position, setPosition] = react.useState({ top: 100, left: 10 });
+    const [size, setSize] = react.useState({ width: 300, height: 600 });
+    const initialSizeRef = react.useRef({ width: 0, height: 0 });
     const [dragging, setDragging] = react.useState(false);
+    const [resizing, setResizing] = react.useState(false);
     const [rel, setRel] = react.useState({ x: 0, y: 0 }); // Position relative to the cursor
 
     const onMouseDown = (e) => {
-        if (e.button !== 0) return; // Only left mouse button
-        const panelElement = e.target.closest('.panel_YqS');
-
-        // Calculate the initial relative position
+        if (e.button !== 0) return;
+        setDragging(true);
+        const panelElement = e.target.closest("."+styles.CLASS_PANEL);
         const rect = panelElement.getBoundingClientRect();
         setRel({
             x: e.clientX - rect.left,
             y: e.clientY - rect.top,
         });
-
-        setDragging(true);
         e.stopPropagation();
         e.preventDefault();
     }
 
-    const onMouseUp = (e) => {
+    const onMouseUp = () => {
         setDragging(false);
-        // Remove window event listeners when the mouse is released
+        setResizing(false);
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
+        window.removeEventListener('mousemove', onResizeMouseMove);
     }
 
     const onMouseMove = (e) => {
-        if (!dragging) return;
+        if (!dragging || resizing) return;
 
         setPosition({
             top: e.clientY - rel.y,
@@ -46,39 +75,63 @@ const $Panel = ({ title, children, react, style}) => {
         e.preventDefault();
     }
 
-    const draggableStyle = {
-        ...defaultStyle,
-        top: position.top + 'px',
-        left: position.left + 'px',
-        ...style
+    const onResizeMouseDown = (e) => {
+        setResizing(true);
+        initialSizeRef.current = { width: size.width, height: size.height }; // Store initial size
+        setRel({ x: e.clientX, y: e.clientY });
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
+    const onResizeMouseMove = (e) => {
+        if (!resizing) return;
+
+        const widthChange = e.clientX - rel.x;
+        const heightChange = e.clientY - rel.y;
+        setSize({
+            width: Math.max(initialSizeRef.current.width + widthChange, 100),
+            height: Math.max(initialSizeRef.current.height + heightChange, 100)
+        });
+        setRel({ x: e.clientX, y: e.clientY });
+        e.stopPropagation();
+        e.preventDefault();
     }
 
     react.useEffect(() => {
-        if (dragging) {
-            // Attach event listeners to window
-            window.addEventListener('mousemove', onMouseMove);
+        if (dragging || resizing) {
+            window.addEventListener('mousemove', dragging ? onMouseMove : onResizeMouseMove);
             window.addEventListener('mouseup', onMouseUp);
         }
 
         return () => {
-            // Clean up event listeners when the component unmounts or dragging is finished
-            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mousemove', dragging ? onMouseMove : onResizeMouseMove);
             window.removeEventListener('mouseup', onMouseUp);
         };
-    }, [dragging]); // Only re-run the effect if dragging state changes
+    }, [dragging, resizing]);
+
+    const draggableStyle = {
+        ...defaultStyle,
+        ...style,
+        top: `${position.top}px`,
+        left: `${position.left}px`,
+        width: `${size.width}px`,
+        height: `${size.height}px`
+    }
 
     return (
-        <div className="panel_YqS" style={draggableStyle}>
+        <div className={styles.CLASS_PANEL} style={draggableStyle}>
             <div className="header_H_U header_Bpo child-opacity-transition_nkS"
                  onMouseDown={onMouseDown}>
                 <div className="title-bar_PF4">
                     <div className="icon-space_h_f"></div>
                     <div className="title_SVH title_zQN">{title}</div>
+                    <$CloseButton onClick={onClose}/>
                 </div>
             </div>
             <div className="content_XD5 content_AD7 child-opacity-transition_nkS">
                 {children}
             </div>
+            <Resizer onMouseDown={onResizeMouseDown} />
         </div>
     );
 }

@@ -23,11 +23,35 @@ const noop = (...args) => {
     window.alert("Results: " + JSON.stringify(args, null, 2))
 }
 
+const $PanelExample = ({label, children}) => {
+    const [showing, setShowing] = React.useState(false)
+    const changingLabel = (showing ? "Hide" : "Show") + " Example " + label
+
+    let toRender = null
+
+    if (showing) {
+        toRender = <$Panel title="Hello" react={React} onClose={() => setShowing(false)}>
+            {children}
+        </$Panel>
+    }
+
+    return <div>
+        <$Button onClick={() => setShowing(!showing)} label={changingLabel}/>
+        {toRender}
+    </div>
+}
+
 const _examples = {
     "panel": [
-        <$Panel title="Hello" react={React}>
+        <$PanelExample label="Barebones">
             <h3>Waddup world</h3>
-        </$Panel>
+        </$PanelExample>,
+        <$PanelExample label="With stuff">
+            <h3>Waddup world</h3>
+            <$InteractiveField react={React}/>
+            <$Meter label="minGood Test 75" value={75} gradient="minGood" />
+            <$Button label="Test Button"/>
+        </$PanelExample>,
     ],
     "field": [
         <$Field label="Left-hand Traffic" checked={true} onToggle={noop}/>,
@@ -57,7 +81,7 @@ const $App = () => {
 
     const [selected, setSelected] = useState(null);
 
-    const $components_keys = Object.keys(components).map((k) => {
+    const $components_keys = Object.keys(examples).map((k) => {
         const color = selected === k ? "#526DE4" : "#455FCF"
         return <div onClick={() => setSelected(k)}
                     style={{display: "block", color: color}}
@@ -69,7 +93,7 @@ const $App = () => {
     const selected_examples = examples[selected] || []
 
     const $examples = selected_examples.map((example) => {
-        return <div>
+        return <div style={{margin: 10, padding: 10}}>
             {example}
         </div>
     })
