@@ -35,7 +35,17 @@ const $CloseButton = ({onClick}) => {
     </button>
 }
 
-const $Panel = ({ title, children, react, style, onClose, initialPosition, initialSize}) => {
+const $Panel = ({
+    react,
+    children,
+    title,
+    style,
+    onClose,
+    initialPosition,
+    initialSize,
+    onPositionChange,
+    onSizeChange,
+}) => {
     // TODO these two should be settable by parent
     const [position, setPosition] = react.useState(initialPosition || { top: 100, left: 10 });
     const [size, setSize] = react.useState(initialSize || { width: 300, height: 600 });
@@ -69,10 +79,12 @@ const $Panel = ({ title, children, react, style, onClose, initialPosition, initi
     const onMouseMove = (e) => {
         if (!dragging || resizing) return;
 
-        setPosition({
+        const newPosition = {
             top: e.clientY - rel.y,
             left: e.clientX - rel.x,
-        });
+        };
+        setPosition(newPosition);
+        onPositionChange(newPosition);
         e.stopPropagation();
         e.preventDefault();
     }
@@ -90,10 +102,12 @@ const $Panel = ({ title, children, react, style, onClose, initialPosition, initi
 
         const widthChange = e.clientX - rel.x;
         const heightChange = e.clientY - rel.y;
-        setSize({
+        const newSize = {
             width: Math.max(initialSizeRef.current.width + widthChange, 100),
             height: Math.max(initialSizeRef.current.height + heightChange, 100)
-        });
+        };
+        setSize(newSize);
+        onSizeChange(newSize);
         setRel({ x: e.clientX, y: e.clientY });
         e.stopPropagation();
         e.preventDefault();

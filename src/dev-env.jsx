@@ -37,6 +37,40 @@ const $PanelExample = ({label, children, panelProps}) => {
     </div>
 }
 
+const $PanelOutsideState = () => {
+    const [showing, setShowing] = React.useState(false)
+    const [pos, setPos] = React.useState({top: 700, left: 700})
+    const [size, setSize] = React.useState({width: 600, height: 300})
+
+    const changingLabel = (showing ? "Hide" : "Show") + " With State"
+
+    let toRender = null
+    let finalPanelProps = {
+        initialPosition: pos,
+        initialSize: size,
+        onPositionChange: (new_pos) => setPos(new_pos),
+        onSizeChange: (new_size) => setSize(new_size),
+    }
+
+    if (showing) {
+        toRender = <$Panel title="Hello" react={React} onClose={() => setShowing(false)} {...finalPanelProps}>
+            <div>Position</div>
+            <pre>{JSON.stringify(pos, null, 2)}</pre>
+            <div>Size</div>
+            <pre>{JSON.stringify(size, null, 2)}</pre>
+        </$Panel>
+    }
+
+    return <div>
+        <$Button onClick={() => setShowing(!showing)} label={changingLabel}/>
+        <div>Position</div>
+        <pre>{JSON.stringify(pos, null, 2)}</pre>
+        <div>Size</div>
+        <pre>{JSON.stringify(size, null, 2)}</pre>
+        {toRender}
+    </div>
+}
+
 const _examples = {
     "panel": [
         <$PanelExample label="Barebones">
@@ -51,6 +85,7 @@ const _examples = {
         <$PanelExample label="With initial position and size" panelProps={{initialPosition: {top: 500, left: 500}, initialSize: {width: 300, height: 100}}}>
             <div>Hello</div>
         </$PanelExample>,
+        <$PanelOutsideState/>
     ],
     "field": [
         <$Field label="Left-hand Traffic" checked={true} onToggle={noop}/>,
