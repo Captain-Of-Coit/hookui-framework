@@ -79,12 +79,16 @@ const $Panel = ({
     const onMouseMove = (e) => {
         if (!dragging || resizing) return;
 
+        const newTop = e.clientY - rel.y;
+        const newLeft = e.clientX - rel.x;
+
         const newPosition = {
-            top: e.clientY - rel.y,
-            left: e.clientX - rel.x,
+            top: newTop > 0 ? newTop : 0,
+            left: newLeft > 0 ? newLeft : 0,
         };
+
         setPosition(newPosition);
-        onPositionChange(newPosition);
+        onPositionChange ?? onPositionChange(newPosition);
         e.stopPropagation();
         e.preventDefault();
     }
@@ -107,7 +111,7 @@ const $Panel = ({
             height: Math.max(initialSizeRef.current.height + heightChange, 100)
         };
         setSize(newSize);
-        onSizeChange(newSize);
+        onSizeChange ?? onSizeChange(newSize);
         setRel({ x: e.clientX, y: e.clientY });
         e.stopPropagation();
         e.preventDefault();
