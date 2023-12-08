@@ -35,9 +35,11 @@ const $CloseButton = ({onClick}) => {
     </button>
 }
 
-const $Panel = ({ title, children, react, style, onClose}) => {
-    const [position, setPosition] = react.useState({ top: 100, left: 10 });
-    const [size, setSize] = react.useState({ width: 300, height: 600 });
+const $Panel = ({ title, children, react, style, onClose, initialPosition, initialSize}) => {
+    // TODO these two should be settable by parent
+    const [position, setPosition] = react.useState(initialPosition || { top: 100, left: 10 });
+    const [size, setSize] = react.useState(initialSize || { width: 300, height: 600 });
+
     const initialSizeRef = react.useRef({ width: 0, height: 0 });
     const [dragging, setDragging] = react.useState(false);
     const [resizing, setResizing] = react.useState(false);

@@ -5,13 +5,8 @@ import $Panel from './components/panel'
 import $Field from './components/field'
 import $Meter from './components/meter'
 import $Button from './components/button'
-
-const _components = {
-    "panel": $Panel,
-    "field": $Field,
-    "meter": $Meter,
-    "button": $Button,
-}
+import $Header from './components/header'
+import $Label from './components/label'
 
 const $InteractiveField = ({react}) => {
     const [checked, setChecked] = react.useState(false)
@@ -23,14 +18,15 @@ const noop = (...args) => {
     window.alert("Results: " + JSON.stringify(args, null, 2))
 }
 
-const $PanelExample = ({label, children}) => {
+const $PanelExample = ({label, children, panelProps}) => {
     const [showing, setShowing] = React.useState(false)
     const changingLabel = (showing ? "Hide" : "Show") + " Example " + label
 
     let toRender = null
+    let finalPanelProps = panelProps || {}
 
     if (showing) {
-        toRender = <$Panel title="Hello" react={React} onClose={() => setShowing(false)}>
+        toRender = <$Panel title="Hello" react={React} onClose={() => setShowing(false)} {...finalPanelProps}>
             {children}
         </$Panel>
     }
@@ -52,6 +48,9 @@ const _examples = {
             <$Meter label="minGood Test 75" value={75} gradient="minGood" />
             <$Button label="Test Button"/>
         </$PanelExample>,
+        <$PanelExample label="With initial position and size" panelProps={{initialPosition: {top: 500, left: 500}, initialSize: {width: 300, height: 100}}}>
+            <div>Hello</div>
+        </$PanelExample>,
     ],
     "field": [
         <$Field label="Left-hand Traffic" checked={true} onToggle={noop}/>,
@@ -72,18 +71,41 @@ const _examples = {
     "button": [
         <$Button label="Test Button"/>,
         <$Button label="window.alert" onClick={() => window.alert('hello there')}/>
+    ],
+    "header": [
+        <$Header>Test Header</$Header>
+    ],
+    "label": [
+        <$Label>Test Label</$Label>
     ]
 }
 
+const currentPage = () => {
+    return window.location.hash.substring(1)
+}
+
+
 const $App = () => {
-    const [components, setComponents] = useState(_components);
     const [examples, setExamples] = useState(_examples);
 
     const [selected, setSelected] = useState(null);
 
+    React.useEffect(() => {
+        const handleHashChange = () => {
+            setSelected(currentPage())
+        }
+        setSelected(currentPage())
+
+        window.addEventListener('hashchange', handleHashChange)
+
+        return () => {
+            window.removeEventListener('hashchange', handleHashChange)
+        }
+    })
+
     const $components_keys = Object.keys(examples).map((k) => {
         const color = selected === k ? "#526DE4" : "#455FCF"
-        return <div onClick={() => setSelected(k)}
+        return <div onClick={() => window.location.hash = k}
                     style={{display: "block", color: color}}
                 >
             {k} {selected === k ? "<" : ""}

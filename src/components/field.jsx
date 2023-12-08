@@ -1,4 +1,5 @@
 import React from 'react'
+import $Label from './label'
 import * as styles from '../styles'
 
 const $Field = ({label, react, checked, onToggle}) => {
@@ -9,9 +10,9 @@ const $Field = ({label, react, checked, onToggle}) => {
     }
 
     return <div className={styles.many(styles.CLASS_FIELD, styles.CLASS_TOGGLEITEM)} onClick={handleClick}>
-        <div className={styles.CLASS_LABEL}>
+        <$Label>
             {label}
-        </div>
+        </$Label>
         <div className={styles.many(styles.CLASS_TOGGLE, styles.CLASS_ITEMMOUSESTATES, checked_class)}>
             <div className={styles.many(styles.CLASS_CHECKMARK, checked_class)}></div>
         </div>
