@@ -43,8 +43,8 @@ const $Panel = ({
     onClose,
     initialPosition,
     initialSize,
-    onPositionChange,
-    onSizeChange,
+    onPositionChange = () => {},
+    onSizeChange = () => {},
 }) => {
     // TODO these two should be settable by parent
     const [position, setPosition] = react.useState(initialPosition || { top: 100, left: 10 });
@@ -88,7 +88,7 @@ const $Panel = ({
         };
 
         setPosition(newPosition);
-        onPositionChange ?? onPositionChange(newPosition);
+        onPositionChange(newPosition);
         e.stopPropagation();
         e.preventDefault();
     }
@@ -111,7 +111,7 @@ const $Panel = ({
             height: Math.max(initialSizeRef.current.height + heightChange, 100)
         };
         setSize(newSize);
-        onSizeChange ?? onSizeChange(newSize);
+        onSizeChange(newSize);
         setRel({ x: e.clientX, y: e.clientY });
         e.stopPropagation();
         e.preventDefault();
